@@ -103,6 +103,7 @@ def err_ratio(predict, dataset, examples=None):
     """
     examples = examples or dataset.examples
     if len(examples) == 0:
+        print("Error: empty example set in err_ratio")
         return 0.0
     right = 0
     for example in examples:
@@ -556,7 +557,8 @@ def learn_tennis_tree(filename):
 
 
     #insert code here
-
+    dataSet = DataSet(name=filename, target='Play')
+    tree = DecisionTreeLearner(dataSet)
 
     return(dataSet,tree)
 
@@ -572,8 +574,16 @@ def test_tennis_tree(filename):
     testSet = None
     tree = None
     error = 0
+    dataSet = DataSet(name=filename)
 
-    #insert code here
+    # Split the data into training and test sets
+    trainSet, testSet = train_test_split(dataset=dataSet, test_split=0.2)
+
+    # Make a decision tree based on the training set
+    tree = DecisionTreeLearner(trainSet)
+
+    # Calculate error using the test set
+    error = err_ratio(tree, testSet)
 
     return(trainSet,testSet,tree,error)
 
@@ -584,7 +594,7 @@ def genSyntheticTrainSet():
     data = None
 
     #insert code here
-
+    data = SyntheticRestaurant(200)
 
     return(data)
 
@@ -595,7 +605,7 @@ def genSyntheticTestSet():
     data = None
 
     #insert code here
-
+    data = SyntheticRestaurantTest(100)
 
     return (data)
 
