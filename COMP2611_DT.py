@@ -656,7 +656,9 @@ def train_tree(trainSet, testSet):
     error = 0
 
     #insert code here
+    tree = DecisionTreeLearner(trainSet)
 
+    error = err_ratio(tree, testSet)
 
     return(tree,error)
 
