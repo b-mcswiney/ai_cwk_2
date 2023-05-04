@@ -619,10 +619,31 @@ def train_restaurant_tree(trainSet, testSet, N=200):
 
     tree = None
     samples_required = 0
+    errors = []
+    count = 1
 
+    while count <= N:
+        leftOverSet, splitTrainingSet = train_test_split(dataset=trainSet,start=0, end=count)
+
+        tree = DecisionTreeLearner(splitTrainingSet)
+
+        error = err_ratio(tree, testSet)
+
+        errors.append(error)
+
+        count = count+1
+
+    count = 1
+
+    while count <= N:
+        if errors[count] == error:
+            samples_required = count
+            break
+
+        count = count + 1
 
     #insert code here
-
+    print(samples_required)
 
     return(tree,samples_required)
 
