@@ -686,6 +686,10 @@ def prune_tree(tree,testSet):
     # Should more evaluations need to occur, perform them
     while p_value >= 0.05:
         p_value, delta, error_rate = evaluate(tree, testSet)
+        
+        print("p_value: ", p_value)
+        print("delta: ", delta)
+        print("error_rate: ", error_rate)
         clear_counts(tree)
 
     return(testSet,p_value,delta,tree,error_rate)
