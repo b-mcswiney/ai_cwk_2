@@ -326,7 +326,10 @@ def deviation(value,parent_pos,parent_neg):
         return 0
 
     #Insert code here
+    expected_pos = (parent_pos * (value.pos + value.neg))/(parent_pos + parent_neg)
+    expected_neg = (parent_neg * (value.pos + value.neg))/(parent_pos + parent_neg)
 
+    deviation = ((value.pos - expected_pos)**2/(expected_pos)) + ((value.neg - expected_neg)**2/(expected_neg))
 
     return (deviation)
 
@@ -409,7 +412,7 @@ def evaluate(predict,dataset, examples = None):
                 #Insert code here
                 #calculate p_value using the stats.chi2.cdf function.
                 #The degree of freedom (num of variable) is the number of branches at the parent.
-
+                p_value = stats.chi2.cdf(DELTA, len(parent.branches))
 
 
                 print("chisquare-score is:", DELTA, " and p value is:", p_value)
@@ -669,7 +672,7 @@ def genPruneTestSet():
     data = None
 
     #insert code here
-
+    data = SyntheticRestaurantPruneTest(1000)
 
     return(data)
 
@@ -678,12 +681,14 @@ def prune_tree(tree,testSet):
     ##function should prune the decison tree (tree) using the evaluate method as many times as required when evaluated using testSet.
     ##the function must return the testSet used, the p_value, K and error rates of the final tree (tree) returned from the evalaute function.
 
-    p_value = 0
+    p_value = 1
     error_rate = 0
     delta = 1.0
 
     #insert code here
-
+    while p_value > 0.05:
+        p_value, delta, error_rate = evaluate(tree, testSet)
+        clear_counts(tree)
 
     return(testSet,p_value,delta,tree,error_rate)
 
