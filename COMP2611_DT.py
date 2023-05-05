@@ -412,7 +412,7 @@ def evaluate(predict,dataset, examples = None):
                 #Insert code here
                 #calculate p_value using the stats.chi2.cdf function.
                 #The degree of freedom (num of variable) is the number of branches at the parent.
-                p_value = stats.chi2.cdf(DELTA, len(parent.branches))
+                p_value = stats.chi2.cdf(DELTA, len(parent.branches) + 1)
 
 
                 print("chisquare-score is:", DELTA, " and p value is:", p_value)
@@ -633,10 +633,9 @@ def train_restaurant_tree(trainSet, testSet, N=200):
         error = err_ratio(tree, testSet)
 
         errors.append(error)
-
         count = count+1
 
-    count = 1
+    count = 0
 
     while count <= N:
         if errors[count] == error:
@@ -644,9 +643,6 @@ def train_restaurant_tree(trainSet, testSet, N=200):
             break
 
         count = count + 1
-
-    #insert code here
-    print(samples_required)
 
     return(tree,samples_required)
 
@@ -686,7 +682,9 @@ def prune_tree(tree,testSet):
     delta = 1.0
 
     #insert code here
-    while p_value > 0.05:
+
+    # Should more evaluations need to occur, perform them
+    while p_value >= 0.05:
         p_value, delta, error_rate = evaluate(tree, testSet)
         clear_counts(tree)
 
